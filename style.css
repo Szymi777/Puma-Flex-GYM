@@ -1,0 +1,247 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: #0d0d0d;
+    color: #f5f5f5;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* NAV */
+nav {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+nav h1 {
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #d4af37;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: #d4af37;
+}
+
+/* HERO */
+.hero {
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), #0d0d0d),
+    url(bg1.jpg) center/cover;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+}
+
+.hero-content {
+    max-width: 700px;
+}
+
+.hero h2 {
+    font-size: 64px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.hero span {
+    color: #d4af37;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.hero button {
+    padding: 18px 40px;
+    background: #d4af37;
+    border: none;
+    color: #000;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.hero button:hover {
+    background: #fff;
+}
+
+/* SECTIONS */
+section {
+    padding: 100px 10%;
+}
+
+.section-title {
+    font-size: 42px;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title span {
+    color: #d4af37;
+}
+
+/* FEATURES */
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+}
+
+.feature {
+    background: #151515;
+    padding: 40px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+    border: 1px solid #d4af37;
+}
+
+.feature h3 {
+    margin-bottom: 15px;
+    color: #d4af37;
+}
+
+/* TRAINERS */
+.trainers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.trainer {
+    background: #151515;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.trainer img {
+    width: 100%;
+    height: 490px;
+    object-fit: cover;
+}
+
+.trainer-info {
+    padding: 30px;
+}
+
+/* PRICING */
+.pricing {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.price-card {
+    background: #151515;
+    padding: 50px;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+.price-card:hover {
+    border-color: #d4af37;
+}
+
+.price {
+    font-size: 48px;
+    color: #d4af37;
+    margin: 20px 0;
+}
+
+/* CONTACT */
+form {
+    max-width: 600px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+input, textarea {
+    padding: 15px;
+    background: #151515;
+    border: none;
+    color: #fff;
+}
+
+button.submit {
+    background: #d4af37;
+    color: #000;
+    font-weight: 700;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+}
+
+/* FOOTER */
+footer {
+    background: #000;
+    padding: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+    margin-top: auto;
+}
+
+/* RESPONSIVE */
+@media(max-width: 768px){
+    .hero h2 {
+        font-size: 42px;
+    }
+}
+
+.karnety-hero {
+    min-height: calc(100vh - 120px);
+    padding: 160px 10% 100px;
+    background:
+        linear-gradient(to bottom, rgba(0,0,0,0.8), #0d0d0d),
+        url(bg2.jpg) center/cover;
+}
+
+.trenerzy-hero {
+    min-height: calc(100vh - 120px);
+    padding: 160px 10% 100px;
+    background:
+        linear-gradient(to bottom, rgba(0,0,0,0.8), #0d0d0d),
+        url(bg3.jpg) center/cover;
+}
+
+.logo {
+    text-decoration: none;
+    color: #d4af37;
+}
