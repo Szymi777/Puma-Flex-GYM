@@ -1,6 +1,10 @@
 <?php
-    $mysqli = new mysqli('localhost', 'root', '', 'logowanie_sesje');
-    if ($mysqli->connect_errno) {
-        die('Błąd połączenia z bazą danych: ' . $mysqli->connect_error);
-    }
+// Tworzymy połączenie z bazą danych
+$mysqli = new mysqli('localhost', 'root', '', 'pumaflex');
+
+// Sprawdzamy czy wystąpił błąd
+if ($mysqli->connect_errno) {
+    // Jeśli tak – zatrzymujemy program
+    die('Błąd połączenia z bazą danych: ' . $mysqli->connect_error);
+}
 ?>

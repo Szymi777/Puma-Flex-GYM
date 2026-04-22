@@ -1,31 +1,43 @@
 <?php
-    require 'db.php';
-    $komunikat = '';
+require 'db.php'; // połączenie z bazą
+
+$komunikat = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $login = trim($_POST['login'] ?? '');
-        $haslo = trim($_POST['haslo'] ?? '');
 
-        if ($login === '' || $haslo === '') {
-            $komunikat = "Wypełnij wszystkie pola!";
+    // Pobieranie danych
+    $login = trim($_POST['login'] ?? '');
+    $haslo = trim($_POST['haslo'] ?? '');
+
+    // Sprawdzanie pustych pól
+    if ($login === '' || $haslo === '') {
+        $komunikat = "Wypełnij wszystkie pola!";
+    } else {
+
+        // Sprawdzamy czy login już istnieje
+        $stmt = $mysqli->prepare("SELECT id FROM uzytkownicy WHERE login = ?");
+        $stmt->bind_param('s', $login);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $komunikat = "Taki użytkownik już istnieje!";
         } else {
-            $stmt = $mysqli->prepare("SELECT id FROM uzytkownicy WHERE login = ?");
-            $stmt->bind_param('s', $login);
-            $stmt->execute();
-            $stmt->store_result();
 
-            if ($stmt->num_rows > 0) {
-                $komunikat = "Taki użytkownik już istnieje!";
-            } else {
-                $hash = password_hash($haslo, PASSWORD_DEFAULT);
-                $stmt = $mysqli->prepare("INSERT INTO uzytkownicy (login, haslo) VALUES (?, ?)");
-                $stmt->bind_param('ss', $login, $hash);
-                $stmt->execute();
-                $komunikat = "Zarejestrowano pomyślnie!";
-            }
-            $stmt->close();
+            // Hashowanie hasła (bardzo ważne!)
+            $hash = password_hash($haslo, PASSWORD_DEFAULT);
+
+            // Dodanie użytkownika do bazy
+            $stmt = $mysqli->prepare("INSERT INTO uzytkownicy (login, haslo) VALUES (?, ?)");
+            $stmt->bind_param('ss', $login, $hash);
+            $stmt->execute();
+
+            $komunikat = "Zarejestrowano pomyślnie!";
         }
+
+        $stmt->close();
     }
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -44,13 +56,12 @@
     <h1><a href="index.html" class="logo">PUMA FLEX</a></h1>
     <ul>
         <li><a href="index.html#oferta">Oferta</a></li>
-        <li><a href="trenerzy.html">Trenerzy</a></li>
+        <li><a href="trenerzy.php">Trenerzy</a></li>
         <li><a href="karnety.html">Karnety</a></li>
         <li><a href="index.html#kontakt">Kontakt</a></li>
         <li><a href="welcome.php">Profil</a></li>
     </ul>
 </nav>
-<body>
     <div class="hero">
     <h1>Rejestracja</h1>
 
@@ -63,5 +74,5 @@
     <p style="color:darkred;"><?= htmlspecialchars($komunikat) ?></p>
 
     <h1><a href="login.php">Masz konto? Zaloguj się</a></h1>
-</body></div>
+</div></body>
 </html>

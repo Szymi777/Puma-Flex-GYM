@@ -1,37 +1,59 @@
 <?php
-    session_start();
-    require 'db.php';
-    $komunikat = '';
+session_start(); // start sesji
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $login = trim($_POST['login'] ?? '');
-        $haslo = trim($_POST['haslo'] ?? '');
+require 'db.php'; // dołączenie pliku z połączeniem do bazy
 
-        if ($login === '' || $haslo === '') {
-            $komunikat = "Podaj login i hasło!";
-        } else {
-            $stmt = $mysqli->prepare("SELECT id, haslo FROM uzytkownicy WHERE login = ?");
-            $stmt->bind_param('s', $login);
-            $stmt->execute();
-            $res = $stmt->get_result();
+$komunikat = ''; // zmienna na komunikaty dla użytkownika
 
-            if ($row = $res->fetch_assoc()) {
-                if (password_verify($haslo, $row['haslo'])) {
-                    // ✔ Zapisujemy dane do sesji
-                    $_SESSION['user_id'] = $row['id'];
-                    $_SESSION['user_login'] = $login;
+    // Sprawdzamy czy formularz został wysłany
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-                    header('Location: welcome.php');
-                    exit;
-                } else {
-                    $komunikat = "Niepoprawne hasło!";
-                }
+    // Pobieramy dane i usuwamy spacje
+    $login = trim($_POST['login'] ?? '');
+    $haslo = trim($_POST['haslo'] ?? '');
+
+    // Sprawdzamy czy pola nie są puste
+    if ($login === '' || $haslo === '') {
+        $komunikat = "Podaj login i hasło!";
+    } else {
+
+        // Przygotowane zapytanie (bezpieczne!)
+        $stmt = $mysqli->prepare("SELECT id, haslo FROM uzytkownicy WHERE login = ?");
+        
+        // Podpinamy parametr (s = string)
+        $stmt->bind_param('s', $login);
+        
+        // Wykonujemy zapytanie
+        $stmt->execute();
+        
+        // Pobieramy wynik
+        $res = $stmt->get_result();
+
+        // Sprawdzamy czy użytkownik istnieje
+        if ($row = $res->fetch_assoc()) {
+
+            // Sprawdzamy hasło (porównanie hashy)
+            if (password_verify($haslo, $row['haslo'])) {
+
+                // Zapisujemy dane do sesji
+                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['user_login'] = $login;
+
+                // Przekierowanie na profil
+                header('Location: welcome.php');
+                exit;
+
             } else {
-                $komunikat = "Nie znaleziono takiego użytkownika!";
+                $komunikat = "Niepoprawne hasło!";
             }
-            $stmt->close();
+        } else {
+            $komunikat = "Nie znaleziono takiego użytkownika!";
         }
+
+        // Zamykamy zapytanie
+        $stmt->close();
     }
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -50,7 +72,7 @@
     <h1><a href="index.html" class="logo">PUMA FLEX</a></h1>
     <ul>
         <li><a href="index.html#oferta">Oferta</a></li>
-        <li><a href="trenerzy.html">Trenerzy</a></li>
+        <li><a href="trenerzy.php">Trenerzy</a></li>
         <li><a href="karnety.html">Karnety</a></li>
         <li><a href="index.html#kontakt">Kontakt</a></li>
         <li><a href="welcome.php">Profil</a></li>
@@ -67,5 +89,5 @@
 
     <p style="color:darkred;"><?= htmlspecialchars($komunikat) ?></p>
     <h1><a class='kolorowy' href="register.php">Nie masz konta? Zarejestruj się</a></h1>
-</body></div>
+</div></body>
 </html>
