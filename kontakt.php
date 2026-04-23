@@ -17,12 +17,16 @@ $message = $_POST['message'];
 $sql = "INSERT INTO kontakt (name, email, message) 
         VALUES ('$name', '$email', '$message')";
 
-// Wykonujemy zapytanie
+
+//wykonujemy zapytanie
 if ($conn->query($sql) === TRUE) {
-    // Jeśli się udało
-    echo "Wiadomość została wysłana!";
+    // Jeśli się udało, wyświetlamy JS i przekierowujemy
+    echo "<script>
+        alert('Wiadomość została wysłana pomyślnie!');
+        window.location.href = 'index.html#kontakt';
+    </script>";
+    //jeśli bład
 } else {
-    // Jeśli błąd – pokazujemy komunikat
     echo "Błąd: " . $conn->error;
 }
 
